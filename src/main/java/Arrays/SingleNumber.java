@@ -2,27 +2,44 @@ package Arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class SingleNumber {
-	public static List getNonDblicate(Integer[] mas) {
-		Arrays.asList(mas).sort(Comparator.naturalOrder());
-		List<Integer> list = new ArrayList<>(Arrays.asList(mas));
-		List<Integer> list1 = IntStream
-				.range(0, mas.length)
-				.filter(i -> i % 2 != 0)
-				.mapToObj(i -> mas[i])
-				.collect(Collectors.toList());
-		  list.removeAll(list1);
-		return list;
+	public static int singleNumber(int[] nums) {
+		Arrays.sort(nums);
+		for (int i = 0; i < nums.length; i++) {
+			boolean isSingleEl = true;
+			if (i + 1 < nums.length) {
+				isSingleEl = nums[i] != nums[i + 1];
+			}
+			if (i - 1 >= 0) {
+				isSingleEl = nums[i] != nums[i - 1] && isSingleEl;
+			}
+			if (isSingleEl) {
+				return nums[i];
+			}
+		}
+		return -1;
 	}
 
 	public static void main(String[] args) {
-		Integer[] mas = {5, 8, 1, 5, 8};
-		getNonDblicate(mas);
+		Integer[] mas = {5, 8, 100, 5, 8};
+		Integer[] todelete = {5, 8};
+		List<Integer> list = new ArrayList<>(Arrays.asList(mas));
+		list.removeAll(Arrays.asList(todelete));
+		System.out.println(list);
 	}
+
+			/*List<Integer> list  = Arrays.stream(nums)
+				.boxed()
+				.sorted(Comparator.naturalOrder())
+				.collect(Collectors.toList());
+
+		List<Integer> listOfOddElements = IntStream
+				.range(0, list.size())
+				.filter(i -> i % 2 != 0)
+				.mapToObj(list::get)
+				.collect(Collectors.toList());
+		list.removeAll(listOfOddElements);    */
 }
 
